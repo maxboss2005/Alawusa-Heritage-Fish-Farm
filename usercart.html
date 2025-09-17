@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Cart | Alawusa Heritage</title>
+  <link rel="shortcut icon" href="Alawusa heritage icon - Icon.png" type="img">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script type="module" src="homepage.js"></script>
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+
+  <style>
+    body { font-family: 'Poppins', sans-serif; background: #f5f5f5; margin: 0; padding: 0; }
+    a {color: inherit; text-decoration: none;}
+    header {position: sticky; top: 0; z-index: 1000; background: #b6bdb6; color: #fff; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+    header h1 { font-size: 20px; margin: 0; }
+    
+    header li { font-size: 18px; margin-top: 5px; }
+
+    .cart-container { max-width: 1100px; margin: 30px auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+
+    /* Price filter */
+    .filter-box {
+      margin-bottom: 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .filter-box input {
+      width: 100px;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+    .filter-box button {
+      background: #4c9949;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .filter-box button:hover { background: #3b7b39; }
+
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 12px; text-align: center; border-bottom: 1px solid #eee; font-size: 14px; }
+    th { background: #fafafa; }
+    td img { width: 60px; height: 60px; object-fit: cover; border-radius: 6px; }
+    .remove-btn { color: red; cursor: pointer; }
+
+    .summary { margin-top: 25px; padding: 20px; background: #fafafa; border-radius: 8px; }
+    .summary p { display: flex; justify-content: space-between; margin: 8px 0; flex-wrap: wrap; }
+    .checkout-btn { width: 100%; margin-top: 15px; font-size: 16px; padding: 12px; background: #4c9949; color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+    .checkout-btn:hover { background: #3b7b39; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header { flex-direction: column; text-align: center; }
+      header a { margin-top: 10px; }
+
+      table, thead, tbody, th, td, tr { display: block; }
+      thead { display: none; }
+
+      tr { margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+      td { text-align: left; padding: 8px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; }
+      td img { width: 50px; height: 50px; }
+    }
+
+    .filter-section {
+  border: 0px solid #ddd;
+  border-radius: 8px;
+  padding: 0px;
+  margin-bottom: 0px;
+  background: #fff;
+}
+
+.filter-section h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.price-values {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.slider-container {
+  position: relative;
+  height: 40px;
+}
+
+.slider-container input[type=range] {
+  position: absolute;
+  width: 100%;
+  pointer-events: none; /* let both overlap */
+  -webkit-appearance: none;
+  background: transparent;
+  border: 0px solid;
+}
+
+.slider-container input[type=range]::-webkit-slider-thumb {
+  pointer-events: all;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+.slider-container input[type=range]::-moz-range-thumb {
+  pointer-events: all;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #4c9949;
+  cursor: pointer;
+}
+
+.cart { position: relative; cursor: pointer; }
+    .cart-count { position: absolute; top: -8px; right: -10px; background: red; color: #fff; font-size: 12px; font-weight: bold; padding: 3px 6px; border-radius: 50%; }
+
+    .navbar ul{
+  display: flex;
+  gap: 20px; /* reduced spacing */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: none;
+  margin-right: 500px;
+  margin-top: 10px;
+}
+
+.navbar ul li {font-weight: 500; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;}
+
+.navbar ul li:hover { color: green;}
+.navbar li.active {color: green; font-weight: bold;}
+
+/* Modal overlay */
+.modal {
+  display: none; 
+  position: absolute;
+  z-index: 1000;
+  left: 0; top: 0;
+  margin-bottom: -150px;
+  width: 100%; height: 100%;
+  
+  justify-content: center; 
+  align-items: center;
+}
+
+
+/* Modal box */
+.modal-content {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  position: relative;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-content h2 {
+  margin: 0 0 10px;
+  font-size: 20px;
+}
+
+.modal-content p {
+  margin-bottom: 20px;
+  color: #555;
+}
+
+/* Buttons */
+.modal-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.modal-buttons button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.modal-buttons button:first-child {
+  background: #4c9949;
+  color: #fff;
+}
+
+.modal-buttons button:last-child {
+  background: #333;
+  color: #fff;
+}
+
+/* Close button */
+.close-btn {
+  position: absolute;
+  top: 8px; right: 12px;
+  font-size: 22px;
+  cursor: pointer;
+  color: #666;
+}
+
+.close-btn:hover { color: #000; }
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.footer {
+  margin-top: 100px;
+  margin-bottom: -500px;
+  background: #0f2c0f;
+  color: #fff;
+  padding: 40px 20px 20px;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: space-between;
+}
+
+.footer-column h5 {
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #7ed957;
+}
+
+.footer-column ul li {
+  margin-bottom: 10px;
+  list-style: none;
+  margin-left: -40px;
+}
+
+.footer-column ul li a {
+  color: #fff;
+  transition: color 0.3s;
+}
+
+.footer-column ul li a:hover {
+  color: #7ed957;
+}
+
+.social-links i {
+  margin-right: 8px;
+}
+
+.footer-copy {
+  margin-top: 30px;
+  text-align: center;
+  border-top: 1px solid #333;
+  padding-top: 15px;
+  font-size: 13px;
+  color: #bbb;
+}
+
+/* Responsive footer */
+@media (max-width: 768px){
+  .footer { margin-top: 250px;}
+  .footer-links {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+/* Hamburger icon */
+.menu-toggle {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+  margin-left: 300px;
+  margin-top: -30px;
+}
+
+/* Mobile menu */
+.navbar ul {
+  transition: max-height 0.3s ease;
+}
+
+@media (max-width: 768px) {
+
+  
+  .navbar ul {
+    flex-direction: column;
+    background: #b6bdb6;
+    position: absolute;
+    top: 85px; /* below header */
+    left: 0;
+    width: 100%;
+    max-height: 0; /* collapsed */
+    overflow: hidden;
+  }
+  .navbar ul li {
+    margin: 15px 0;
+    text-align: center;
+  }
+  .menu-toggle {
+    display: block;
+  }
+  .navbar.active ul {
+    max-height: 500px; /* enough to show menu items */
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .hidden {
+    display: block;
+  }
+}
+
+
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>My Cart</h1>
+
+  <!-- Hamburger Icon for Mobile -->
+<div class="menu-toggle" id="mobileMenu">
+  <i class="fa fa-bars"></i>
+</div>
+
+   <!-- Desktop Menu -->
+  <nav class="navbar">
+    <ul>
+      <li><a href="homepage.html">Home</a></li>
+      <li class="active"><a href="userproducts.html">Products</a></li>
+      <li><a href="userorders.html">Orders</a></li>
+      <li><a href="wishlist.html">Wishlist</a></li>
+      <li id="logoutButton">Logout</li>
+    </ul>
+  </nav>
+
+  
+</header>
+
+<div class="cart-container">
+
+  <!-- Price Filter with Slider -->
+<div class="filter-section">
+
+  <div class="price-values">
+    
+  </div>
+  <div class="slider-container">
+  
+    <input type="range" id="minRange" min="0" max="0" value="0" step="1000">
+    <input type="range" id="maxRange" min="0" max="0" value="0">
+  </div>
+</div>
+
+
+  <!-- Cart Table -->
+  <table>
+    <thead>
+      <tr>
+        <th>Remove</th>
+        <th>Image</th>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+      </tr>
+    </thead>
+    <tbody id="cartTable"></tbody>
+  </table>
+
+  <!-- Summary -->
+  <div class="summary">
+    <p><span>Cart Subtotal:</span> <span id="cartSubtotal">₦0</span></p>
+    <p><span>Shipping:</span> <span id="shipping">₦0</span></p>
+    <p style="font-weight:600; font-size: 16px;"><span>Total:</span> <span id="total">₦0</span></p>
+
+    <a href="usercheckout.html"><button class="checkout-btn" > Proceed to Checkout</button></a>
+  </div>
+</div>
+
+<!-- Checkout Currency Modal -->
+<div id="currencyModal" class="modal">
+  <div class="modal-content">
+    <h2>Select Payment Option</h2>
+    <p>Please choose how you want to pay:</p>
+    <div class="modal-buttons">
+      <button onclick="window.location.href='usercheckout.html'">Pay in Naira</button>
+      <button onclick="window.location.href='usercheckout.html'">Pay in Foreign Currency</button>
+    </div>
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-links">
+      <div class="footer-column">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="useraboutus.html">About Us</a></li>
+          <li><a href="userourfarm.html">Our Farm</a></li>
+          <li><a href="userblogpost.html">Blog</a></li>
+          <li><a href="userfaq.html">FAQs</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h5>Explore</h5>
+        <ul>
+          <li><a href="userrecipes.html">Recipes</a></li>
+          <li><a href="usertestimonial.html">Testimonials</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h5>Follow Us</h5>
+        <ul class="social-links">
+          <li><a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i> Facebook</a></li>
+          <li><a href="https://wa.me/your-number" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
+          <li><a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-copy">
+      &copy; 2025 Alawusa Heritage Fish & Farms. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<script>
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let filteredCart = [...cart];
+
+  function renderCart() {
+    const cartTable = document.getElementById("cartTable");
+    cartTable.innerHTML = "";
+
+    let subtotal = 0;
+  let shipping = 0;
+
+  filteredCart.forEach((item, index) => {
+    let quantity = item.quantity || 1;
+    let itemSubtotal = item.price * quantity;
+    let itemShipping = (item.shipping || 2000) * quantity; // default shipping 2000 if not set
+
+    subtotal += itemSubtotal;
+    shipping += itemShipping;
+
+      const row = `
+        <tr>
+          <td><span class="hidden">Remove:</span><i class="fa fa-trash remove-btn" onclick="removeItem(${index})"></i></td>
+          <td><span class="hidden">Image: </span><img src="${item.img}" alt="${item.name}"></td>
+          <td><span class="hidden">Product: </span>${item.name}</td>
+          <td><span class="hidden">Price: </span>₦${item.price.toLocaleString()}</td>
+          <td>
+            <span class="hidden">Quantity: </span><input type="number" min="1" value="${item.quantity || 1}" 
+              onchange="updateQuantity(${index}, this.value)">
+          </td>
+          <td><span class="hidden">Subtotal: </span>₦${itemSubtotal.toLocaleString()}</td>
+        </tr>`;
+      cartTable.innerHTML += row;
+    });
+
+    const total = subtotal + shipping;
+
+    document.getElementById("cartSubtotal").textContent = `₦${subtotal.toLocaleString()}`;
+    document.getElementById("shipping").textContent = `₦${shipping.toLocaleString()}`;
+    document.getElementById("total").textContent = `₦${total.toLocaleString()}`;
+    localStorage.setItem("checkoutTotal", total);
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
+
+  function removeItem(index) {
+    cart.splice(index, 1);
+    filteredCart = [...cart];
+    renderCart();
+  }
+
+  function updateQuantity(index, qty) {
+    filteredCart[index].quantity = parseInt(qty);
+    cart[index].quantity = parseInt(qty);
+    renderCart();
+  }
+
+
+let minRange = document.getElementById("minRange");
+let maxRange = document.getElementById("maxRange");
+let minPriceVal = document.getElementById("minPriceVal");
+let maxPriceVal = document.getElementById("maxPriceVal");
+
+function setupSlider() {
+  if (cart.length === 0) return;
+
+  // Get min & max price from cart
+  let prices = cart.map(item => item.price);
+  let minPrice = Math.min(...prices);
+  let maxPrice = Math.max(...prices);
+
+  // Set slider attributes
+  minRange.min = minPrice;
+  minRange.max = maxPrice;
+  minRange.value = minPrice;
+
+  maxRange.min = minPrice;
+  maxRange.max = maxPrice;
+  maxRange.value = maxPrice;
+
+  minPriceVal.textContent = minPrice.toLocaleString();
+  maxPriceVal.textContent = maxPrice.toLocaleString();
+}
+
+function applySliderFilter() {
+  let minVal = parseInt(minRange.value);
+  let maxVal = parseInt(maxRange.value);
+
+  // prevent overlap
+  if (minVal > maxVal) {
+    [minVal, maxVal] = [maxVal, minVal];
+  }
+
+  minPriceVal.textContent = minVal.toLocaleString();
+  maxPriceVal.textContent = maxVal.toLocaleString();
+
+  filteredCart = cart.filter(item => item.price >= minVal && item.price <= maxVal);
+  renderCart();
+}
+
+// Listen to slider moves
+minRange.addEventListener("input", applySliderFilter);
+maxRange.addEventListener("input", applySliderFilter);
+
+window.onload = () => {
+  filteredCart = [...cart];
+  renderCart();
+  setupSlider();
+};
+
+function proceedToCheckout() {
+  if (cart.length === 0) {
+    alert("Your cart is empty. Please add items before proceeding to checkout.");
+    return;
+  }
+  // Save total and cart
+  const total = document.getElementById('total').innerText.replace(/₦|,/g, "");
+  localStorage.setItem('checkoutTotal', total);
+  localStorage.setItem('cart', JSON.stringify(cart));
+
+  // Show modal
+  document.getElementById("currencyModal").style.display = "flex";
+}
+
+function closeModal() {
+  document.getElementById("currencyModal").style.display = "none";
+}
+
+function payWithPaystack() {
+  let total = localStorage.getItem('checkoutTotal');
+
+  // Get currently logged-in user
+  const user = firebase.auth().currentUser;
+
+  if (!user) {
+    alert("You must be logged in to proceed to payment.");
+    return;
+  }
+
+  let email = user.email; // get email from Firebase Auth
+
+  var handler = PaystackPop.setup({
+    key: 'pk_test_d351927aa0cc3bfdefc245a3b51a2ee3ed62e424', // your Paystack public key
+    email: email,
+    amount: total * 100, // amount in Kobo
+    currency: "NGN",
+    ref: 'ALAWUSA_' + Math.floor((Math.random() * 1000000000) + 1),
+    callback: function(response) {
+      alert('Payment successful! Reference: ' + response.reference);
+
+      // Save order to Firebase
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      let order = {
+        reference: response.reference,
+        email: email,
+        total: total,
+        cart: cart,
+        date: new Date().toISOString()
+      };
+      firebase.database().ref("orders").push(order);
+
+      // Send order to Google Sheets
+      fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", {
+        method: "POST",
+        body: JSON.stringify(order),
+        headers: { "Content-Type": "application/json" }
+      });
+
+      // Redirect to success page
+      window.location.href = "order-success.html";
+    },
+    onClose: function() {
+      alert('Payment window closed.');
+    }
+  });
+
+  handler.openIframe();
+}
+
+
+  // Render cart on load
+  renderCart();
+
+</script>
+
+
+<script>
+const mobileMenu = document.getElementById('mobileMenu');
+const navbar = document.querySelector('.navbar');
+
+mobileMenu.addEventListener('click', () => {
+  navbar.classList.toggle('active');
+  // Animate icon (optional)
+  mobileMenu.querySelector('i').classList.toggle('fa-bars');
+  mobileMenu.querySelector('i').classList.toggle('fa-times');
+});
+</script>
+
+
+</body>
+</html>

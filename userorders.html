@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Orders | Alawusa Heritage</title>
+  <link rel="shortcut icon" href="Alawusa heritage icon - Icon.png" type="img">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script type="module" src="homepage.js"></script>
+  <style>
+    body { font-family: 'Poppins', sans-serif; background: #f5f5f5; margin: 0; }
+    a {color: inherit; text-decoration: none;}
+    header { position: sticky; top: 0; z-index: 1000; background: #b6bdb6; color: #fff; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+    header h1 { font-size: 22px; }
+    .filters { display: flex; gap: 10px; padding: 15px; background: #fff; }
+    .filters button {
+      border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer;
+      font-weight: 500; background: #e0e0e0;
+    }
+    .filters button.active { background: #4c9949; color: #fff; }
+    .orders-container { padding: 20px; display: grid; gap: 15px; }
+    .order-card { background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; gap: 15px; align-items: center; }
+    .order-card img { width: 70px; height: 70px; object-fit: cover; border-radius: 8px; }
+    .order-info { flex: 1; }
+    .order-info h3 { margin: 0; font-size: 15px; }
+    .order-info p { margin: 5px 0; font-size: 14px; }
+    .status { font-size: 13px; font-weight: 600; padding: 4px 8px; border-radius: 6px; }
+    .status.awaiting { background: #ff9800; color: #fff; }
+    .status.successful { background: #4caf50; color: #fff; }
+    .cart { position: relative; cursor: pointer; }
+    .cart-count { position: absolute; top: -8px; right: -10px; background: red; color: #fff; font-size: 12px; font-weight: bold; padding: 1px 4px; border-radius: 50%; }
+
+    .navbar ul{
+  display: flex;
+  gap: 20px; /* reduced spacing */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: none;
+  margin-left: -300px;
+  margin-top: 10px;
+}
+
+.navbar ul li {font-weight: 500; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;}
+
+.navbar ul li:hover { color: green;}
+.navbar li.active {color: green; font-weight: bold;}
+
+.footer {
+  margin-top: 400px;
+  
+  background: #0f2c0f;
+  color: #fff;
+  padding: 40px 20px 20px;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: space-between;
+}
+
+.footer-column h5 {
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #7ed957;
+}
+
+.footer-column ul li {
+  margin-bottom: 10px;
+  list-style: none;
+  margin-left: -40px;
+}
+
+.footer-column ul li a {
+  color: #fff;
+  transition: color 0.3s;
+}
+
+.footer-column ul li a:hover {
+  color: #7ed957;
+}
+
+.social-links i {
+  margin-right: 8px;
+}
+
+.footer-copy {
+  margin-top: 30px;
+  text-align: center;
+  border-top: 1px solid #333;
+  padding-top: 15px;
+  font-size: 13px;
+  color: #bbb;
+}
+
+/* Responsive footer */
+@media (max-width: 768px){
+  .footer { margin-top: 250px;}
+  .footer-links {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+/* Hamburger icon */
+.menu-toggle {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+  margin-left: 150px;
+}
+
+/* Mobile menu */
+.navbar ul {
+  transition: max-height 0.3s ease;
+}
+
+@media (max-width: 768px) {
+
+  
+  .navbar ul {
+    flex-direction: column;
+    background: #b6bdb6;
+    position: absolute;
+    top: 85px; /* below header */
+    left: 300px;
+    width: 100%;
+    max-height: 0; /* collapsed */
+    overflow: hidden;
+  }
+  .navbar ul li {
+    margin: 15px 0;
+    text-align: center;
+  }
+  .menu-toggle {
+    display: block;
+  }
+  .navbar.active ul {
+    max-height: 500px; /* enough to show menu items */
+  }
+}
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>My Orders</h1>
+
+  <!-- Hamburger Icon for Mobile -->
+<div class="menu-toggle" id="mobileMenu">
+  <i class="fa fa-bars"></i>
+</div>
+
+  <!-- Desktop Menu -->
+  <nav class="navbar">
+    <ul>
+      <li><a href="homepage.html">Home</a></li>
+      <li class="active"><a href="userproducts.html">Products</a></li>
+      <li><a href="userorders.html">Orders</a></li>
+      <li><a href="wishlist.html">Wishlist</a></li>
+      <li id="logoutButton">Logout</li>
+    </ul>
+  </nav>
+
+  <div class="cart">
+    <a href="usercart.html"><i class="fa fa-shopping-cart"></i></a>
+    <span class="cart-count" id="cartCount">0</span>
+  </div>
+</header>
+
+
+
+
+
+<div class="filters">
+  <button class="active" data-filter="all">All</button>
+  <button data-filter="awaiting">Awaiting</button>
+  <button data-filter="successful">Successful</button>
+</div>
+
+<div class="orders-container" id="ordersList"></div>
+
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-links">
+      <div class="footer-column">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="useraboutus.html">About Us</a></li>
+          <li><a href="userourfarm.html">Our Farm</a></li>
+          <li><a href="userblogpost.html">Blog</a></li>
+          <li><a href="userfaq.html">FAQs</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h5>Explore</h5>
+        <ul>
+          <li><a href="userrecipes.html">Recipes</a></li>
+          <li><a href="usertestimonial.html">Testimonials</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h5>Follow Us</h5>
+        <ul class="social-links">
+          <li><a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i> Facebook</a></li>
+          <li><a href="https://wa.me/your-number" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
+          <li><a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-copy">
+      &copy; 2025 Alawusa Heritage Fish & Farms. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+  
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDuxTHLfwiETTMO6Dx7YMehngZqWLgUlH0",
+    authDomain: "alawusa-heritage-website.firebaseapp.com",
+    projectId: "alawusa-heritage-website",
+    storageBucket: "alawusa-heritage-website.firebasestorage.app",
+    messagingSenderId: "857988164081",
+    appId: "1:857988164081:web:ccac1200d344a8bd82bc50",
+    measurementId: "G-TJQJMVVMZG"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  
+
+  const ordersList = document.getElementById("ordersList");
+  let orders = [];
+
+  // Render orders dynamically
+  function renderOrders(filter="all") {
+    ordersList.innerHTML = "";
+    let filtered = orders;
+    if (filter !== "all") {
+      filtered = orders.filter(o => o.status === filter);
+    }
+    if (filtered.length === 0) {
+      ordersList.innerHTML = "<p style='text-align:center;color:#666;'>No orders found.</p>";
+      return;
+    }
+    filtered.forEach(order => {
+      const card = document.createElement("div");
+      card.className = "order-card";
+      card.innerHTML = `
+        <img src="${order.img}" alt="${order.name}">
+        <div class="order-info">
+          <h3>${order.name}</h3>
+          <p>₦${order.price.toLocaleString()}</p>
+        </div>
+        <span class="status ${order.status}">${order.status}</span>
+      `;
+      ordersList.appendChild(card);
+    });
+  }
+
+  // Event listeners for filters
+  document.querySelectorAll(".filters button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".filters button").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      renderOrders(btn.dataset.filter);
+    });
+  });
+
+  // Load orders (cart + successful orders)
+async function loadOrders() {
+  orders = [];
+
+  // Awaiting (cart)
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart.forEach(item => orders.push({...item, status: "awaiting"}));
+
+  // Successful (from localStorage successfulOrders)
+  const successful = JSON.parse(localStorage.getItem("successfulOrders")) || [];
+  successful.forEach(item => orders.push({...item, status: "successful"}));
+
+  renderOrders("all");
+}
+    // Auth state
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      loadOrders(user.uid);
+    } else {
+      ordersList.innerHTML = "<p style='text-align:center;color:#666;'>Please log in to view your orders.</p>";
+    }
+  });
+
+  function markOrderSuccessful() {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let successful = JSON.parse(localStorage.getItem("successfulOrders")) || [];
+
+  // Move everything in cart → successfulOrders
+  successful = successful.concat(cart);
+
+  // Save back to localStorage
+  localStorage.setItem("successfulOrders", JSON.stringify(successful));
+
+  // Clear the cart
+  localStorage.removeItem("cart");
+}
+
+</script>
+
+<script>
+function updateCartCount() {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  document.getElementById("cartCount").textContent = cart.length;
+}
+window.onload = updateCartCount;
+</script>
+
+<script>
+const mobileMenu = document.getElementById('mobileMenu');
+const navbar = document.querySelector('.navbar');
+
+mobileMenu.addEventListener('click', () => {
+  navbar.classList.toggle('active');
+  // Animate icon (optional)
+  mobileMenu.querySelector('i').classList.toggle('fa-bars');
+  mobileMenu.querySelector('i').classList.toggle('fa-times');
+});
+</script>
+
+</body>
+</html>

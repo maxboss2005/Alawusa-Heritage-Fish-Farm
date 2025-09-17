@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products | Alawusa Heritage</title>
+  <link rel="shortcut icon" href="Alawusa heritage icon - Icon.png" type="img">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; background: #f5f5f5; margin: -5px;}
+    a {color: inherit; text-decoration: none;}
+
+    header { position: sticky; top: 0; z-index: 1000; background: #b6bdb6; color: #fff; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;}
+    header h1 { font-size: 22px; }
+    .cart { position: relative; cursor: pointer;}
+    .cart-count { position: absolute; top: -8px; right: -10px; background: red; color: #fff; font-size: 12px; font-weight: bold; padding: 1px 4px; border-radius: 50%; }
+
+    .products-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 0fr)); gap: 18px; padding: 20px;}
+    .product-card { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1); transition: transform 0.2s ease; position: relative; }
+    .product-card:hover { transform: translateY(-5px); }
+    .product-img { background: #ddd; height: 180px; display: flex; align-items: center; justify-content: center; }
+    .product-img img { width: 100%; height: 100%;}
+    .wishlist { position: absolute; top: 10px; right: 10px; background: #fff; border-radius: 50%; padding: 8px; cursor: pointer; transition: 0.3s; z-index: 3; }
+    .wishlist.active { color: red; }
+    .product-info { padding: 15px; }
+    .product-info h3 { font-size: 15px; font-weight: 500; margin-bottom: 8px; color: #222; }
+    .product-info p { font-size: 14px; font-weight: 900; color: #4c9949; margin-bottom: 12px; }
+    .product-info button { background: #4c9949; border: none; color: #fff; font-weight: 600; padding: 10px 15px; border-radius: 6px; cursor: pointer; transition: background 0.3s; }
+    .product-info button:hover { background: #3b7b39; }
+
+    /* Search bar */
+    .search-bar { flex: 1; display: flex; align-items: center; max-width: 500px; margin: 10px; background: #fff; border-radius: 6px; padding: 5px 10px; }
+    .search-bar input { flex: 1; border: none; outline: none; font-size: 14px; padding: 8px; }
+    .search-bar i { color: #4c9949; cursor: pointer; font-size: 16px; }
+
+    .no-results { text-align: center; color: #555; padding: 40px 10px; }
+    .no-results i { font-size: 40px; color: #ccc; margin-bottom: 10px; }
+    .no-results p { font-size: 16px; }
+
+    .navbar ul { display: flex; gap: 20px; list-style: none; margin-left: 210px; margin-top: 10px; }
+    .navbar ul li {font-weight: 500; font-family: Cambria, Georgia, serif;}
+    .navbar ul li:hover { color: green;}
+    .navbar li.active {color: green; font-weight: bold;}
+
+    .popup {
+  display: none; position: fixed; top: 0; justify-content: center;
+  width: 100%; height: 100%; background: rgba(0,0,0,0.5);
+  justify-content: center; align-items: center; z-index: 1000;
+}
+.popup-content {
+  background: #fff; padding: 20px; border-radius: 10px; width: 320px;
+  text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  
+}
+.popup-content img { width: 100%; height: auto; border-radius: 6px; margin-bottom: 10px; }
+.close { float: right; font-size: 22px; cursor: pointer; color: #666; }
+.confirm-btn {
+  background: #4c9949; color: #fff; border: none;
+  padding: 10px 15px; border-radius: 6px; margin-top: 10px;
+  cursor: pointer; font-weight: bold; transition: 0.3s;
+}
+.confirm-btn:hover { background: #3b7b39; }
+@keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+
+/* Styled Slider */
+#priceSlider {
+  -webkit-appearance: none; /* Remove default */
+  width: 100%;
+  height: 8px;
+  border-radius: 5px;
+  background: linear-gradient(to right, #4c9949, #a8e6a1);
+  outline: none;
+  margin: 15px 0;
+  transition: 0.3s;
+}
+
+/* Slider Thumb (Chrome, Safari, Edge) */
+#priceSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #4c9949;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+#priceSlider::-webkit-slider-thumb:hover {
+  background: #3b7b39;
+  transform: scale(1.1);
+}
+
+/* Slider Thumb (Firefox) */
+#priceSlider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #4c9949;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+#priceSlider::-moz-range-thumb:hover {
+  background: #3b7b39;
+  transform: scale(1.1);
+}
+
+/* Firefox track */
+#priceSlider::-moz-range-track {
+  height: 8px;
+  border-radius: 5px;
+  background: linear-gradient(to right, #4c9949, #a8e6a1);
+}
+
+/* Internet Explorer / Edge */
+#priceSlider::-ms-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #4c9949;
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.footer {
+  margin-top: 100px;
+  background: #0f2c0f;
+  color: #fff;
+  padding: 40px 20px 20px;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: space-between;
+}
+
+.footer-column h5 {
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #7ed957;
+}
+
+.footer-column ul li {
+  margin-bottom: 10px;
+  list-style: none;
+}
+
+.footer-column ul li a {
+  color: #fff;
+  transition: color 0.3s;
+}
+
+.footer-column ul li a:hover {
+  color: #7ed957;
+}
+
+.social-links i {
+  margin-right: 8px;
+}
+
+.footer-copy {
+  margin-top: 30px;
+  text-align: center;
+  border-top: 1px solid #333;
+  padding-top: 15px;
+  font-size: 13px;
+  color: #bbb;
+}
+
+/* Responsive footer */
+@media (max-width: 768px){
+  .footer { margin-top: 250px;}
+  .footer-links {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+/* Hamburger icon */
+.menu-toggle {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+  margin-left: 150px;
+}
+
+/* Mobile menu */
+.navbar ul {
+  transition: max-height 0.3s ease;
+}
+
+@media (max-width: 768px) {
+
+  
+  .navbar ul {
+    flex-direction: column;
+    background: #b6bdb6;
+    position: absolute;
+    top: 85px; /* below header */
+    left: -200px;
+    width: 100%;
+    max-height: 0; /* collapsed */
+    overflow: hidden;
+  }
+  .navbar ul li {
+    margin: 15px 0;
+    text-align: center;
+  }
+  .menu-toggle {
+    display: block;
+  }
+  .navbar.active ul {
+    max-height: 500px; /* enough to show menu items */
+  }
+}
+
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Our Products</h1>
+
+  <!-- Hamburger Icon for Mobile -->
+<div class="menu-toggle" id="mobileMenu">
+  <i class="fa fa-bars"></i>
+</div>
+
+  <!-- Desktop Menu -->
+  <nav class="navbar">
+    <ul>
+      <li><a href="homepage.html">Home</a></li>
+      <li class="active"><a href="userproducts.html">Products</a></li>
+      <li><a href="userorders.html">Orders</a></li>
+      <li><a href="wishlist.html">Wishlist</a></li>
+      <li id="logoutButton">Logout</li>
+    </ul>
+  </nav>
+
+  <!-- Search bar -->
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search for products...">
+    <i class="fa fa-search"></i>
+  </div>
+
+  <div class="cart">
+    <a href="usercart.html"><i class="fa fa-shopping-cart"></i></a>
+    <span class="cart-count" id="cartCount">0</span>
+  </div>
+</header>
+
+<!-- ✅ All Products in static HTML -->
+<div class="products-container" id="productsList">
+
+  <div class="product-card" data-name="Fresh Catfish">
+    <div class="wishlist" data-id="1"><i class="fa fa-heart"></i></div>
+    <div class="product-img"><img src="catfish pic.jpeg" alt="Alawusa Farm Fresh Catfish"></div>
+    <div class="product-info">
+      <h3>Alawusa Farm Fresh Catfish</h3>
+      <p>₦2,000 - ₦4,000</p>
+      <button onclick="openPopup('Catfish','catfish pic.jpeg',2000,4000)">Add to Cart</button>
+    </div>
+  </div>
+
+  
+
+  
+
+
+  <div class="product-card" data-name="Live Chicken">
+    <div class="wishlist" data-id="2"><i class="fa fa-heart"></i></div>
+    <div class="product-img"><img src="Live chicken sticker.png" alt="Alawusa Farm-Fresh Live Chicken"></div>
+    <div class="product-info">
+      <h3>Alawusa Farm-Fresh Live Chicken</h3>
+      <p>₦15,000 - ₦35,000</p>
+      <button onclick="openPopup('Live Chicken','Live chicken sticker.png',15000,35000)">Add to Cart</button>
+    </div>
+  </div>
+
+  <div class="product-card" data-name="Sourced Rayfish">
+    <div class="wishlist" data-id="3"><i class="fa fa-heart"></i></div>
+    <div class="product-img"><img src="Ray fish sticker.png" alt="Alawusa Sourced Rayfish"></div>
+    <div class="product-info">
+      <h3>Alawusa Sourced Rayfish</h3>
+      <p>₦80,000 - ₦195,000</p>
+      <button onclick="openPopup('Sourced Rayfish','Ray fish sticker.png',80000,195000)">Add to Cart</button>
+    </div>
+  </div>
+
+  <div class="product-card" data-name="Live Pigs">
+    <div class="wishlist" data-id="4"><i class="fa fa-heart"></i></div>
+    <div class="product-img"><img src="pig sticker.png" alt="Alawusa Farm Fresh Live Pigs"></div>
+    <div class="product-info">
+      <h3>Alawusa Farm Fresh Live Pigs</h3>
+      <p>₦30,000 - ₦200,000</p>
+      <button onclick="openPopup('Live Pigs','pig sticker.png',30000,200000)">Add to Cart</button>
+      
+    </div>
+  </div>
+
+  <div class="product-card" data-name="Chicken Eggs in 30 holes">
+    <div class="wishlist" data-id="5"><i class="fa fa-heart"></i></div>
+    <div class="product-img"><img src="Chicken Eggs 30 holes sticker.png" alt="Chicken Eggs in 30 holes"></div>
+    <div class="product-info">
+      <h3>Chicken Eggs in 30 holes</h3>
+      <p>₦6,000</p>
+      <button onclick="openPopup('Eggs in 30 holes',' Chicken Eggs 30 holes sticker.png',6000,6000)">Add to Cart</button>
+    </div>
+  </div>
+
+  <div class="product-card" data-name="Processed Chicken">
+    <div class="wishlist" data-id="6"><i class="fa fa-heart"></i></div>
+    <div class="product-img"><img src="processed chicken sticker.png" alt="Alawusa Farm-Fresh Full Processed Chicken"></div>
+    <div class="product-info">
+      <h3>Alawusa Farm-Fresh Full Processed Chicken</h3>
+      <p>₦15,000 - ₦35,000</p>
+      <button onclick="openPopup('Full Processed Chicken','processed chicken sticker.png',15000,35000)">Add to Cart</button>
+    
+    </div>
+  </div>
+
+  <div class="product-card" data-name="1kg Processed Chicken">
+    <div class="wishlist" data-id="7"><i class="fa fa-heart"></i></div>
+    <div class="product-img"><img src="processed chicken sticker.png" alt="Alawusa Farm-Fresh 1kg Processed Chicken"></div>
+    <div class="product-info">
+      <h3>Alawusa Farm-Fresh 1kg Processed Chicken</h3>
+      <p>₦5,500</p>
+      <button onclick="openPopup('1kg Processed Chicken','processed chicken sticker.png',5500,5500)">Add to Cart</button>
+    </div>
+  </div>
+
+  <div class="product-card" data-name="Dried Smoked Solefish">
+    <div class="wishlist" data-id="8"><i class="fa fa-heart"></i></div>
+    <div class="product-img"><img src="sole fish sticker.png" alt="Alawusa Sourced Dry Smoked Solefish"></div>
+    <div class="product-info">
+      <h3>Alawusa Sourced Dried Smoked Solefish</h3>
+      <p>₦5,500 - ₦10,000</p>
+      <button onclick="openPopup('Dried Smoked Solefish','sole fish sticker.png',5500,10000)">Add to Cart</button>
+    </div>
+  </div>
+
+  <div class="product-card" data-name="Fresh Pork">
+    <div class="wishlist" data-id="9"><i class="fa fa-heart"></i></div>
+    <div class="product-img"><img src="Pork sticker.png" alt="Alawusa Farm Fresh Pork"></div>
+    <div class="product-info">
+      <h3>Alawusa Farm Fresh Pork</h3>
+      <p>₦3,500 | ₦5,500 | ₦10,000</p>
+      <button onclick="openPopup('Pork','Pork sticker.png',3500,10000)">Add to Cart</button>
+    </div>
+  </div>
+
+  <div class="product-card" data-name="Chicken Eggs in 15 holes">
+    <div class="wishlist" data-id="10"><i class="fa fa-heart"></i></div>
+    <div class="product-img"><img src="Chicken Eggs 15 holes sticker.png" alt="Chicken Eggs in 15 holes"></div>
+    <div class="product-info">
+      <h3>Chicken Eggs in 15 holes</h3>
+      <p>₦3,000</p>
+      <button onclick="openPopup('Eggs in 15 holes','Chicken Eggs 15 holes sticker.png',3000,3000)">Add to Cart</button>
+    </div>
+  </div>
+
+  <div class="product-card" data-name="Fresh Processed Rayfish">
+    <div class="wishlist" data-id="11"><i class="fa fa-heart"></i></div>
+    <div class="product-img"><img src="Processed Rayfish sticker.png" alt="Alawusa Sourced Fresh Rayfish"></div>
+    <div class="product-info">
+      <h3>Alawusa Sourced Processed Rayfish</h3>
+      <p>₦2,000</p>
+      <button onclick="openPopup('Processed Rayfish','Processed Rayfish sticker.png',2000,2000)">Add to Cart</button>
+    </div>
+  </div>
+
+  <div class="product-card" data-name="Dried Smoked Rayfish">
+    <div class="wishlist" data-id="12"><i class="fa fa-heart"></i></div>
+    <div class="product-img"><img src="Dry smoked rayfish sticker.png" alt="Alawusa Sourced Dry Smoked Rayfish"></div>
+    <div class="product-info">
+      <h3>Alawusa Sourced Dried Smoked Rayfish</h3>
+      <p>₦2,500</p>
+      <button onclick="openPopup('Dried Smoked Rayfish','Dry smoked rayfish sticker.png',2500,2500)">Add to Cart</button>
+    </div>
+  </div>
+
+  <div class="product-card" data-name="Dried Catfish">
+    <div class="wishlist" data-id="13"><i class="fa fa-heart"></i></div>
+    <div class="product-img"><img src="Dried catfish sticker.png" alt="Alawusa Dried Catfish (Carton)"></div>
+    <div class="product-info">
+      <h3>Alawusa Dried Catfish (Carton)</h3>
+      <p>₦20,000 - ₦50,000</p>
+      <button onclick="openPopup('Dried Catfish','Dried catfish sticker.png',20000,50000)">Add to Cart</button>
+    </div>
+  </div>
+
+  <div class="product-card" data-name="Sea Food">
+    <div class="wishlist" data-id="14"><i class="fa fa-heart"></i></div>
+    <div class="product-img"><img src="sourced seafood sticker.png" alt="Alawusa Diverse Sourced Sea Food (Frozen, Bagged)"></div>
+    <div class="product-info">
+      <h3>Alawusa Diverse Sourced Sea Food (Frozen, Bagged)</h3>
+      <p>₦40,000 - ₦110,000</p>
+      <button onclick="openPopup('Sourced Sea food','sourced seafood sticker.png',40000,110000)">Add to Cart</button>
+    
+    </div>
+  </div>
+
+</div>
+
+<!-- ✅ Single Popup -->
+<div id="popup" class="popup">
+  <div class="popup-content">
+    <span class="close" onclick="closePopup()">&times;</span>
+    <img id="popupImg" src="" alt="">
+    <h3 id="popupName"></h3>
+    <p>₦<span id="minPrice"></span> - ₦<span id="maxPrice"></span></p>
+
+    <input type="range" id="priceSlider" step="1000" oninput="updatePriceValue()">
+    <p>Chosen Price: ₦<span id="chosenPrice"></span></p>
+
+    <button class="confirm-btn" onclick="confirmAddToCart()">Add to Cart</button>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-links">
+      <div class="footer-column">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="useraboutus.html">About Us</a></li>
+          <li><a href="userourfarm.html">Our Farm</a></li>
+          <li><a href="userblogpost.html">Blog</a></li>
+          <li><a href="userfaq.html">FAQs</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h5>Explore</h5>
+        <ul>
+          <li><a href="userrecipes.html">Recipes</a></li>
+          <li><a href="usertestimonial.html">Testimonials</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h5>Follow Us</h5>
+        <ul class="social-links">
+          <li><a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i> Facebook</a></li>
+          <li><a href="https://wa.me/your-number" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
+          <li><a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-copy">
+      &copy; 2025 Alawusa Heritage Fish & Farms. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<script>
+function openPopup(name, img, min, max) {
+  document.getElementById("popupName").innerText = name;
+  document.getElementById("popupImg").src = img;
+
+  // Set min & max price
+  document.getElementById("minPrice").innerText = min;
+  document.getElementById("maxPrice").innerText = max;
+
+  // Update range input dynamically
+  let slider = document.getElementById("priceSlider");
+  slider.min = min;
+  slider.max = max;
+  slider.value = min;
+
+  // Show initial chosen price
+  document.getElementById("chosenPrice").innerText = min;
+
+   // Save shipping fee to a hidden property in the popup
+  slider.dataset.shipping = 2000;
+
+  // Show popup
+  document.getElementById("popup").style.display = "block";
+}
+
+function updatePriceValue() {
+  let slider = document.getElementById("priceSlider");
+  document.getElementById("chosenPrice").innerText = slider.value;
+}
+
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+}
+
+function confirmAddToCart() {
+  let product = document.getElementById("popupName").innerText;
+  let img = document.getElementById("popupImg").src;
+  let price = parseInt(document.getElementById("chosenPrice").innerText);
+
+  // Get shipping from slider dataset
+  let shipping = parseInt(document.getElementById("priceSlider").dataset.shipping);
+
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  cart.push({ name: product, img: img, price: price, shipping: shipping });
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartCount();
+
+  
+  closePopup();
+  showToast('Added to cart!');
+}
+
+// ✅ Show a toast notification
+  function showToast(msg) {
+    const toast = document.createElement('div');
+    toast.textContent = msg;
+    toast.style.position = 'fixed';
+    toast.style.bottom = '90%';
+    toast.style.right = '10%';
+    toast.style.background = '#15921b';
+    toast.style.color = '#fff';
+    toast.style.padding = '10px 80px';
+    toast.style.borderRadius = '8px';
+    toast.style.zIndex = 9999;
+    toast.style.fontFamily = 'Poppins';
+    toast.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+  }
+
+
+
+function updateCartCount() {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  document.getElementById("cartCount").innerText = cart.length;
+}
+
+window.onload = updateCartCount;
+
+
+const searchInput = document.getElementById("searchInput");
+const productsList = document.getElementById("productsList");
+const productCards = productsList.querySelectorAll(".product-card");
+
+// Create a "no results" placeholder but keep it hidden initially
+const noResults = document.createElement("div");
+noResults.className = "no-results";
+noResults.innerHTML = `<i class="fa fa-search"></i><p>No products found</p>`;
+noResults.style.display = "none";
+productsList.parentNode.insertBefore(noResults, productsList.nextSibling);
+
+searchInput.addEventListener("input", function(e) {
+  const filter = e.target.value.toLowerCase().trim();
+  let found = false;
+
+  productCards.forEach(card => {
+    const name = card.querySelector("h3").textContent.toLowerCase();
+    if (name.includes(filter)) {
+      card.style.display = "block";  // show
+      found = true;
+    } else {
+      card.style.display = "none";   // hide
+    }
+  });
+
+  // Toggle "no results"
+  if (filter && !found) {
+    noResults.style.display = "block";
+  } else {
+    noResults.style.display = "none";
+  }
+});
+
+
+</script>
+
+<script>
+  // Get query string (?q=searchTerm)
+  const params = new URLSearchParams(window.location.search);
+  const q = params.get("q") ? params.get("q").toLowerCase() : "";
+
+  if (q) {
+    const products = document.querySelectorAll(".product-card");
+    let found = false;
+
+    products.forEach(p => {
+      const name = (p.dataset.name || "").toLowerCase();
+      if (name.includes(q)) {
+        p.style.display = "block";
+        found = true;
+      } else {
+        p.style.display = "none";
+      }
+    });
+
+    if (!found) {
+      document.body.insertAdjacentHTML("beforeend",
+        `<p style="text-align:center;margin-top:20px;">No products found for "<strong>${q}</strong>"</p>`);
+    }
+  }
+</script>
+
+<script type="module">
+  // 1️⃣ Firebase setup
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+  import { getFirestore, collection, getDocs, setDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDuxTHLfwiETTMO6Dx7YMehngZqWLgUlH0",
+    authDomain: "alawusa-heritage-website.firebaseapp.com",
+    projectId: "alawusa-heritage-website",
+    storageBucket: "alawusa-heritage-website.firebasestorage.app",
+    messagingSenderId: "857988164081",
+    appId: "1:857988164081:web:ccac1200d344a8bd82bc50",
+    measurementId: "G-TJQJMVVMZG"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  let currentUser = null;
+
+  // 2️⃣ Reference all wishlist buttons
+  const wishlistButtons = document.querySelectorAll(".wishlist");
+
+  // 3️⃣ Function to update UI
+  async function updateWishlistUI() {
+    if (!currentUser) return;
+    const snap = await getDocs(collection(db, "users", currentUser.uid, "wishlist"));
+    const wishlistIds = snap.docs.map(doc => doc.id);
+
+    wishlistButtons.forEach(btn => {
+      const id = btn.dataset.id;
+      if (wishlistIds.includes(id)) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    });
+  }
+
+  // 4️⃣ Handle button clicks
+  wishlistButtons.forEach(btn => {
+    btn.addEventListener("click", async () => {
+      if (!currentUser) {
+        alert("Please log in to manage your wishlist");
+        return;
+      }
+
+      const id = btn.dataset.id;
+      const docRef = doc(db, "users", currentUser.uid, "wishlist", id);
+
+      if (btn.classList.contains("active")) {
+        // Remove from wishlist
+        await deleteDoc(docRef);
+        btn.classList.remove("active");
+      } else {
+        // Add to wishlist
+        await setDoc(docRef, { addedAt: new Date() });
+        btn.classList.add("active");
+      }
+    });
+  });
+
+  // Listen for auth changes
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      currentUser = user;
+      updateWishlistUI();
+    } else {
+      currentUser = null;
+      wishlistButtons.forEach(btn => btn.classList.remove("active"));
+    }
+  });
+
+</script>
+
+<script>
+const mobileMenu = document.getElementById('mobileMenu');
+const navbar = document.querySelector('.navbar');
+
+mobileMenu.addEventListener('click', () => {
+  navbar.classList.toggle('active');
+  // Animate icon (optional)
+  mobileMenu.querySelector('i').classList.toggle('fa-bars');
+  mobileMenu.querySelector('i').classList.toggle('fa-times');
+});
+</script>
+
+
+
+</body>
+</html>
