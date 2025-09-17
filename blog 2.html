@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Farming Tips/Blog | Alawusa Heritage Fish & Farms</title>
+  <link rel="shortcut icon" href="Alawusa heritage icon - Icon.png" type="img">
+  <link rel="stylesheet" href="style.css">
+        <link href="https://fonts.googleapis.com/css2?
+        family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <style>
+
+
+            .shadowed-text {
+                
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+                color: #fff;
+                text-shadow: 10px 10px 15px rgba(1, 1, 1, 1.5);
+                animation: text-shadow-change 5s infinite;
+            }
+            @keyframes text-shadow-change {
+                0% {
+                    text-shadow: 10px 10px 15px rgba(1, 1, 1, 1.5);
+                }
+                50% {
+                    text-shadow: 1px 1px 3px rgba(1, 1, 1, 1.5);
+                }
+            }
+
+            /* Close button */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.close-btn:hover {
+  color: #000;
+}
+
+/* Email input */
+.popup-content input[type="email"] {
+  width: 90%;
+  padding: 10px;
+  margin-top: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+/* Name input */
+.popup-content input[type="text"] {
+  width: 90%;
+  padding: 10px;
+  margin-top: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+/* Get coupon button */
+.popup-content button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #28a745;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.popup-content button:hover {
+  background-color: #218838;
+}
+
+/* Prevent scrolling while popup is open */
+body.popup-open {
+  overflow: hidden;
+}
+
+
+
+/* Desktop navbar */
+.navbar ul {
+  display: flex;
+  gap: 20px; /* reduced spacing */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: none;
+  margin-left: 210px;
+  margin-top: 10px;
+}
+
+.navbar ul li a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #555;
+  transition: color 0.3s;
+  margin: 0 -100px;
+  text-align: center;
+  font-size: 20px;
+}
+
+.navbar ul li a:hover {
+  color: #15921b;
+}
+
+/* Mobile toggle button */
+.menu-toggle {
+  display: none;
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Mobile menu panel */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: -250px;
+  width: 250px;
+  height: 100%;
+  background: rgb(4, 49, 12);
+  box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+  padding: 20px;
+  transition: right 0.3s ease;
+  z-index: 2000;
+}
+
+.mobile-menu.open {
+  right: 0;
+}
+
+.mobile-menu .close-btn {
+  background: none;
+  border: none;
+  font-size: 28px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+}
+
+.mobile-menu ul {
+  list-style: none;
+  padding: 20px 0 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.mobile-menu ul li a {
+  text-decoration: none;
+  color: #f5f3f3;
+  font-weight: bold;
+  font-size: 20px;
+  padding: 10px;
+  border-radius: 6px;
+  transition: background 0.3s;
+  line-height: 3.5;
+}
+
+.mobile-menu ul li a:hover {
+  background: #f0f0f0;
+  color: #218838;
+}
+.menu-icon{
+  display: none;
+}
+
+/* Responsive behavior */
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none;
+  }
+  .menu-icon {
+    display: block;
+  }
+  .shopping-cart {
+    margin-left: 150px;
+  }
+}
+
+
+
+
+/* Sticky header */
+.main-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Top bar with contacts */
+.top-bar {
+  background: #2e802e;
+  color: white;
+  padding: 5px 20px;
+  font-size: 14px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .top-bar {
+    font-size: 12px;
+    color: #000;
+  }
+}
+
+.contact-info span {
+  margin: 0 10px;
+}
+
+
+.footer img {
+  margin-bottom: -100px;
+}
+
+.footer h3, ul li{
+  margin-left: 150px;
+}
+
+@media (max-width: 768px) {
+  .footer h3, ul li{
+    margin-left: 0;
+}
+}
+
+.cart-count {
+  background: red;
+  color: white;
+  padding: 2px 6px; 
+  border-radius: 50%; 
+  font-size: 12px;
+  position: relative; 
+  top: -60px; 
+  left: -10px;
+}
+
+@media (max-width: 768px) {
+  .cart-count {
+    background: red;
+    color: white;
+    padding: 2px 6px; 
+    border-radius: 50%; 
+    font-size: 12px;
+    position: relative;
+    top: -60px; 
+    left: -10px;
+    margin-left: 180px;
+}
+}
+
+.shopping-cart {
+  margin-bottom: 40px;
+}
+@media (max-width: 768px) {
+  .shopping-cart {
+    margin-bottom: 20px;
+    
+  }
+  .address {
+    display: none;
+  }
+}
+
+.desktop-footer-1 {
+  display: flex;
+}
+
+.desktop-footer-1 ul li {
+  font-size: 15px;
+}
+.desktop-footer-1 ul{
+  font-size: 20px;
+}
+
+
+.mobile-footer {
+  display: none;
+}
+
+.media-links{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 150px;
+    margin-bottom: 100px;
+    margin-left: -600px;
+    
+  }
+   
+  .footer  {
+  background-color: rgb(15, 44, 15);
+}
+
+
+@media (max-width: 768px) {
+  .mobile-footer {
+    display: block;
+  }
+  .desktop-footer {
+    display: none;
+  }
+  .media-links{
+    display: flex;
+    justify-content: space-around;
+    margin-top: -70px;
+    margin-bottom: 120px;
+    margin-left: 0px;
+  }
+  .mobile-footer-1 h3{
+    margin-top: 10px;
+    font-size: 20px;
+  }
+  .footer  {
+  background-color: rgb(15, 44, 15);
+}
+
+}
+        </style>
+
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-B2NQHJMLJ6"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-B2NQHJMLJ6');
+        </script>
+        
+</head>
+<body>
+    <body>
+        <header class="main-header">
+
+    <div class="top-bar">
+    <div class="contact-info">
+      <span style="margin-right: 20px; margin-left: -15px;">📞 +234-802-227-6254</span>
+      <span style="margin-right: 0px; margin-left: 21px;">📧 alawusaheritage@gmail.com</span>
+      <span class="address">📍  Alawusa-House, Hungotho, Tube, Ipokia LG, Ogun State</span>
+    </div>
+  </div>
+
+  
+        
+        <div class="header">
+            <div class="logo">
+                <a href="index.html"><img src="Alawusa heritage logo.png" width="150px"></a>
+            </div>
+
+            <!-- Desktop Menu -->
+  <nav class="navbar desktop-nav">
+    <ul>
+      
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="aboutus.html">About Us</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="testimonial.html">Testimonial</a></li>
+      <li><a href="account.html">Account</a></li>
+    </ul>
+  </nav>
+
+            
+
+
+            <a href="cart.html">
+            <img src="shopping-cart.png" width="30px" height="30px"  class="shopping-cart">
+            <span id="cart-count" class="cart-count">0</span>
+            </a>
+            <img src="menu bar.png" class="menu-icon" onclick="openMenu()" style="margin-bottom: 40px;">
+            </div>
+        </div>
+  </header>
+
+  <!-- Mobile Slide Menu -->
+<div id="mobileMenu" class="mobile-menu">
+  <button class="close-btn" onclick="closeMenu()">×</button>
+  <ul>
+    <!-- Home with accordion -->
+    <li class="accordion-item">
+      <button class="accordion-toggle">Home <span class="arrow">▼</span></button>
+      <ul class="accordion-content">
+        <li><a href="index.html#categories" style="color: #000; font-size: 12px; line-height: 0;">Featured Categories</a></li>
+        <li><a href="index.html#fproducts" style="color: #000; font-size: 12px; line-height: 0;">Featured Products</a></li>
+        <li><a href="index.html#lproducts" style="color: #000; font-size: 12px; line-height: 0;">Lastest Products</a></li>
+      </ul>
+    </li>
+
+    <!-- Other normal menu items -->
+    <li><a href="products.html">Products</a></li>
+    <li><a href="aboutus.html">About Us</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="testimonial.html">Testimonial</a></li>
+    <li><a href="account.html">Account</a></li>
+  </ul>
+</div>
+
+
+        <section class="hero" style="margin-top: 0px; background: url(blog.jpg) center/cover no-repeat;" id="head">
+  <div class="hero-content" data-aos="zoom-in">
+    <h1 class="shadowed-text" style="font-size: 7em;">BLOG</h1>
+  </div>
+
+</section>
+
+        <div class="blog-0" style="margin-bottom: 100px; margin-right: 20px; margin-left: 20px;">
+         <h1 align="center" style="font-size: 50px; color: rgb(10, 10, 10);">Tips for Healthier Layers and More Eggs</h1><br>
+         <p style="font-style: italic;">By Alawusa Heritage Fish & Farms</p><br>
+         <p style="font-weight: bold;">INTRODUCTION</p><br>
+         <h4 style="line-height: 2;">Eggs are one of the most consumed and affordable sources of animal protein in Nigeria. 
+            For poultry farmers—whether small-scale or commercial—maintaining the health of your laying hens (layers) 
+            is the key to maximizing egg quality and quantity. 
+            But successful egg production isn’t about luck — it’s about consistency in feed, housing, lighting, and hygiene.</h4><br>
+
+                <!----------------Blog post one---------------------------->
+             <h1 style="margin-top: 100px; line-height: 2;">1. Provide a Balanced and Nutritionally Complete Diet</h1><br>
+             <h5 style="margin-bottom: 50px;">Feeding your birds the right diet is the first step to healthy layers.</h5><br>
+             <h3>Why Nutrition Matters: </h3><br>
+             <p><span style="font-weight: bold; color: black;">Calcium </span>is essential for strong eggshells.</p><br>
+             <p><span style="font-weight: bold; color: black;">Protein </span>supports egg production and muscle maintenance.</p><br>
+             <p><span style="font-weight: bold; color: black;">Energy</span> helps with general productivity and health.</p><br>
+             <p style="margin-bottom: 100px;">Poor feeding leads to thin-shelled or shell-less eggs, weak birds, and reduced output.</p><br>
+
+             <h3>What To Feed: </h3><br>
+             <p>Use quality <b>layer mash or pellets</b> with:<p><br>
+                <li><b>16–18% crude protein</b></li><br>
+                <li><b>3–4% calcium</b>(from sources like oyster shells or limestone)</li><br>
+                <li><b>Essential vitamins and minerals</b>(Vitamin D3, phosphorus, etc.)</li><br>
+             <p>Provide grit or crushed stones to aid digestion.</p><br>
+             <p>Ensure clean, cool water is always available — dehydration slows down laying.</p><BR></BR>
+             <p><b>TIP: You can mix crushed snail shells, bone meal, or charcoal to supplement calcium naturally.</b></p>
+
+                <!----------------Blog post two---------------------------->
+             <h1 style="margin-top: 100px; line-height: 2;">2. Ensure Adequate Lighting (14–16 Hours Daily)</h1><br>
+             <h5 style="margin-bottom: 50px;">Layers are photoperiod-sensitive — 
+                their laying cycle depends on the number of hours of light they receive daily.</h5><br>
+             <h3>Why Light Is Important: </h3><br>
+             <li>Stimulates the pituitary gland to produce hormones that trigger egg laying.</li><br>
+            <li style="margin-bottom: 100px;">Keeps birds active and feeding.</li><br>
+
+             <h3>What To Do: </h3><br>
+             <li>Provide at least 14–16 hours of light daily, especially in the rainy season or during Harmattan.</li><br>
+             <li>Use energy-saving bulbs or LED lights inside the coop.</li><br>
+             <li> Ensure light intensity is around 10–20 lux (enough to read a newspaper at bird level).</li><br>
+             <li> Use timers for automated lighting schedules if possible.</li><BR></BR>
+             <p><b>NOTE: Do not suddenly switch light hours. Gradually increase or reduce light to avoid stress.</b></p>
+
+             <!----------------Blog post three---------------------------->
+             <h1 style="margin-top: 100px; line-height: 2;">3. Maintain a Clean, Dry, and Well-Ventilated Coop</h1><br>
+             <h5 style="margin-bottom: 50px;">Poor coop hygiene is one of the most common causes of disease and low egg production.</h5><br>
+             <h3>Why Sanitation Matters: </h3><br>
+             <li>Reduces disease risk (like coccidiosis, E. coli, Newcastle).</li><br>
+             <li>Prevents buildup of ammonia gas, which causes respiratory distress.</li><br>
+             <li style="margin-bottom: 100px;">Ensures birds are comfortable and stress-free.</li><br>
+
+             <h3>What To Do: </h3><br>
+             <li>Use deep litter system with materials like wood shavings, rice husks, or sawdust — change regularly.</li><br>
+             <li>Sweep droppings, remove leftover feed, and clean drinkers daily.</li><br>
+             <li>Install cross ventilation: use mesh wire, windows, or vents to allow airflow.</li><br>
+             <li>Disinfect the coop weekly with poultry-safe disinfectants.</li><BR></BR>
+             <p><b>PRO TIP: Sprinkle lime or charcoal under the litter to reduce odor and moisture.</b></p>
+
+             <!----------------Blog post four---------------------------->
+             <h1 style="margin-top: 100px; line-height: 2;">4. Prevent & Manage Stress</h1><br>
+             <h5 style="margin-bottom: 50px;">Stress causes hormonal imbalances that reduce egg-laying rates.</h5><br>
+             <h3>Stress factors include: </h3><br>
+             <li>Loud noise or sudden movements</li><br>
+             <li>Overcrowding</li><br>
+             <li>Rough handling</li><br>
+             <li>Poor weather conditions (too hot, too cold)</li><br>
+             <li style="margin-bottom: 100px;">Changes in feed or environment</li><br>
+
+             <h3>What To Do: </h3><br>
+             <li>Keep 4–5 birds per square meter.</li><br>
+             <li>Avoid mixing new birds with older ones without quarantine.</li><br>
+             <li>Maintain a routine: feed at the same time, clean regularly, and keep the coop peaceful.</li><br>
+             <li>Install protective fencing to keep out predators (snakes, dogs, hawks).</li><BR></BR>
+
+             <!----------------Blog post five---------------------------->
+             <h1 style="margin-top: 100px; line-height: 2;">5. Health Monitoring and Vaccination</h1><br>
+             <h5 style="margin-bottom: 50px;">Layers need regular health checks and protection from common poultry diseases.</h5><br>
+             <h3>What to do: </h3><br>
+             <li>Deworm every 2–3 months using poultry-approved dewormers.</li><br>
+             <li>Observe birds for signs of sickness: drooping wings, loss of appetite, ruffled feathers.</li><br>
+             <li>Follow a proper vaccination schedule (Newcastle, Gumboro, Fowl Pox, etc.)</li><br>
+             <li>Work with a vet or agri-extension officer for guidance.</li><BR></BR>
+             <p style="font-weight: bold;">Healthy birds = safe, profitable eggs.</p>
+
+             
+
+             <h2 style="margin-top: 100px; margin-bottom: 20px;">Final Thoughts</h2><br>
+             <p style="line-height: 2; margin-bottom: 100px;">
+                Raising layers isn't just about feeding and waiting — it's about creating the right environment for consistent egg production.
+                 At Alawusa Heritage Fish & Farms, we blend decades of traditional know-how with modern practices to raise healthy, 
+                happy hens that lay quality eggs Nigerian families can trust.
+                Whether you're just starting or managing a growing flock, 
+                apply these tips to make your poultry operation cleaner, healthier, and more productive. <BR></BR>
+
+                <h3>SUMMARY CHECKLIST:</h3><BR></BR>
+                <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; height: 200px; border-collapse: collapse; text-align: center;">
+                    <thead style="background-color: #f2f2f2;">
+                        <tr>
+                        <th>Action</th>
+                        <th>Benefit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Feed high-protein, calcium-rich diet</td>
+                            <td>Strong shells, more eggs</td>
+                        </tr>
+                        <tr>
+                        <td>Provide 14–16 hours of light daily</td>
+                        <td>Triggers consistent laying</td>
+                        </tr>
+                        <tr>
+                        <td>Clean coop & dry litter</td>
+                        <td>Prevents disease & improves comfort</td>
+                        </tr>
+                        <tr>
+                        <td>Prevent stress & overcrowding</td>
+                        <td>Maintains steady production</td>
+                        </tr>
+                        <tr>
+                        <td>Monitor health & vaccinate</td>
+                        <td>Keeps flock safe and productive</td>
+                        </tr>
+                    </tbody>
+                    </table>
+
+                
+
+                <div class="container-1">
+                <h5 align="center" style="margin-top: 100px;">“Healthy birds don’t just happen — they’re the result of smart farming.”<br>
+                    <i><span style="color: black;">— Wisdom from the Alawusa Heritage legacy</span></i> 
+                </h5>
+                </div>
+
+
+
+                
+
+
+
+
+
+        </div>
+        
+      
+
+
+        <!-- Newsletter -->
+<div class="newsletter" style="margin-bottom: 20px;">
+  <div class="newstext">
+    <h4>Sign Up For Newsletters</h4><br>
+    <p>Get E-mail updates about our latest products and <span>special offers.</span></p>
+  </div>
+  <div class="form">
+    <input type="email" id="newsletter-email" placeholder="Your E-mail Address" required>
+    <button class="normal" id="newsletter-btn">Sign Up</button>
+  </div>
+</div>
+  
+            
+            
+
+
+   <!---Footer for Desktop--->
+    <div class="desktop-footer">
+      <div class="footer">
+        <div class="container">
+          
+            
+
+
+                <div class="desktop-footer-1" style="color: white; justify-content: space-between;">
+
+                  <a href="#head"><img src="Alawusa heritage logo.png" class="logo-1" width="200px"></a>
+
+                  <ul style="margin-top: 50px;">
+                  <h3>Customer Service</h3>
+                    <li><a href="faq.html" style="color: white;">FAQs</a></li>
+                  </ul>
+
+                  <ul style="margin-top: 50px;">
+                    <h3>Useful Links</h3>
+                  
+                       <li><a href="blogpost.html" style="color: white;">Farm Tips/Blog Post</a></li>
+                        <li><a href="ourfarm.html" style="color: white;">Our Farm/Sustainability</a></li>
+                        <li><a href="recipes.html" style="color: white;">Recipes</a></li>
+                        <li><a href="aboutus.html" style="color: white;">About Us</a></li>
+                  </ul>
+                       
+
+                    <div class="media-links">
+                      <a href="https://www.facebook.com/profile.php?id=61577588632364&mibextid=ZbWKwL"><img src="facebook.png" style="width: 40px; margin-right: 250px;"></a></p>
+                      <a href="https://www.instagram.com/alawusaheritage?igsh=MXJnbHJ5dGtlOGs0eQ=="><img src="instagram.png" style="width: 40px; margin-right: 250px;"></a></p>
+                      <a href="https://wa.link/zp8ngg"><img src="whatsapp.png" style="width: 40px; margin-right: 250px;"></a></p>
+                    </div>
+        </div>
+        
+                
+            <hr style="color: white;"><p class="copyright" style="color: #fff;">Copyright 2025 - Alawusa Heritage Fish & Farms</p>
+        </div>
+      </div>
+    </div>
+
+    
+
+    <!---Footer for Mobile--->
+    <div class="mobile-footer">
+      <div class="footer">
+        <div class="container">
+          
+            
+
+
+                <div class="mobile-footer-1" style="color: white;">
+                    <a href="faq.html"><h3>FAQs</h3></a>
+                       <a href="blogpost.html"><h3>Farm Tips/Blog Post</h3></a>
+                        <a href="ourfarm.html"><h3>Our Farm/Sustainability</h3></a>
+                        <a href="recipes.html"><h3>Recipes</h3></a>
+                        <a href="aboutus.html"><h3>About Us</h3></a>
+
+                        <a href="#head" ><h3 style="font-size: 12px;">SCROLL UP</h3></a>
+                       
+
+                    <div class="media-links">
+                      <a href="https://www.facebook.com/profile.php?id=61577588632364&mibextid=ZbWKwL"><img src="facebook.png" style="width: 20px;"></a></p>
+                      <a href="https://www.instagram.com/alawusaheritage?igsh=MXJnbHJ5dGtlOGs0eQ=="><img src="instagram.png" style="width: 20px;"></a></p>
+                      <a href="https://wa.link/zp8ngg"><img src="whatsapp.png" style="width: 20px;"></a></p>
+                    </div>
+        </div>
+        
+                
+            <hr style="color: white;"><p class="copyright" style="color: #fff;">Copyright 2025 - Alawusa Heritage Fish & Farms</p>
+        </div>
+      </div>
+    </div>
+
+    <!-------js script for menu toggle------>
+    <script>
+        var MenuItems = document.getElementById("MenuItems");
+        MenuItems.style.maxHeight = "0px";
+        function menutoggle(){
+            if(MenuItems.style.maxHeight == "0px")
+                {
+                  MenuItems.style.maxHeight = "300px"  
+                }
+            else
+                {
+                    MenuItems.style.maxHeight = "0px"
+                }
+        }
+    </script>
+
+    <!---Update cart count badge in the navbar--->
+<script>
+  function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const cartCount = document.getElementById('cart-count');
+    if (cartCount) {
+      cartCount.textContent = totalItems;
+    }
+  }
+
+  // call this on page load
+  updateCartCount();
+
+</script>
+
+  <script src="script.js"></script>
+
+  <script>
+  const newsletterBtn = document.getElementById('newsletter-btn');  // match HTML id
+
+  newsletterBtn.addEventListener('click', function () {
+    const email = document.getElementById('newsletter-email').value.trim(); // match HTML id
+
+    if (!email) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
+    fetch("https://sheetdb.io/api/v1/7pjxxvpo241l5", {  // your SheetDB URL
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        data: [{ Email: email, Type: "Newsletter" }]
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      alert("Thank you for subscribing!");
+      document.getElementById('newsletter-email').value = ""; // clear input
+    })
+    .catch(error => {
+      alert("Something went wrong. Please try again.");
+      console.error(error);
+    });
+  });
+</script>
+
+<script>
+  function openMenu() {
+    document.getElementById('mobileMenu').classList.add('open');
+  }
+
+  function closeMenu() {
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+</script>
+
+
+<script>
+document.querySelectorAll(".accordion-toggle").forEach(button => {
+  button.addEventListener("click", () => {
+    const content = button.nextElementSibling;
+
+    // Close all other accordions
+    document.querySelectorAll(".accordion-content").forEach(menu => {
+      if (menu !== content) {
+        menu.style.maxHeight = null;
+        menu.previousElementSibling.classList.remove("active");
+      }
+    });
+
+    // Toggle this one
+    if (content.style.maxHeight) {
+      content.style.maxHeight = null;
+      button.classList.remove("active");
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+      button.classList.add("active");
+    }
+  });
+});
+</script>
+
+
+</body>
+</html>
